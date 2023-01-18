@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, Validator } from '@angular/forms';
+import { emailPattern, nombreApellidoPattern, noPuedeSerStrider } from 'src/app/shared/validator/validaciones';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ValidatorService } from 'src/app/shared/validator/validator.service';
+import { EmailValidatorService } from '../../../shared/validator/email-validator.service';
 
 @Component({
   selector: 'app-registro',
@@ -8,24 +11,40 @@ import { FormGroup, FormBuilder, Validators, Validator } from '@angular/forms';
 })
 export class RegistroComponent implements OnInit{
 
-  //TODO : temporal
-  //de la a-z y cualquier cantidad de elementos adicionales (+)
-  nombreApellidoPattern : string = '([a-zA-Z]+) ([a-zA-Z]+)';
-  emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
-
   miFromulario : FormGroup = this.fb.group({
-    nombre : ['', [ Validators.required , Validators.pattern(this.nombreApellidoPattern) ]],
-    email : ['', [ Validators.required, Validators.pattern(this.emailPattern)]]
+    nombre : ['', [ Validators.required , Validators.pattern(this.validatorService.nombreApellidoPattern) ]],
+    email : ['', [ Validators.required, Validators.pattern(this.validatorService.emailPattern)], [ this.emailValidator ] ],
+    username : ['', [ Validators.required, this.validatorService.noPuedeSerStrider]],
+    password : ['', [ Validators.required, Validators.minLength(6)]],
+    password2 : ['', [ Validators.required ]]
+  }, {
+    Validators: [ this.validatorService.camposIguales('password', 'password2')]
   })
 
-
-  constructor(private fb : FormBuilder){}
+  constructor(private fb : FormBuilder,
+              private validatorService : ValidatorService,
+              private emailValidator : EmailValidatorService){}
 
   ngOnInit(): void {
     this.miFromulario.reset({
       nombre : 'Keiver',
-      email : 'test1@test.com'
+      email : 'test1@test.com',
+      username : 'keiver',
+      password : '123456',
+      password2 : '123456'
     })
+  }
+
+  get emailErrorMsg() : string {
+    const errors = this.miFromulario.get('email')?.errors;
+    if ( errors?.['required']){
+      return 'Email es obligatorio'
+    }else if ( errors?.['pattern']) {
+      return 'El valor ingresado no tiene formato de correo'
+    }else if (errors?.['emailTomado']){
+      return 'El emain ya fue tomado'
+    }
+    return '';
   }
 
   campoNoValido(campo :string){

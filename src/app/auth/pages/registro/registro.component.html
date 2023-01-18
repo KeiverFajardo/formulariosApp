@@ -32,7 +32,7 @@
                             formControlName="email">
                     <span class="form-text text-danger"
                         *ngIf="campoNoValido('email')">
-                        El correo es obligatorio
+                        {{ emailErrorMsg }}
                     </span>
                 </div>
             </div>
@@ -43,8 +43,12 @@
                 <div class="col-sm-9">
                     <input type="text"
                             class="form-control"
-                            placeholder="Nombre código del usuario">
-
+                            placeholder="Nombre código del usuario"
+                            formControlName="username">
+                        <span class="form-text text-danger"
+                            *ngIf="campoNoValido('username')">
+                            El username no puede ser Strider
+                        </span>
                 </div>
             </div>
 
@@ -54,8 +58,12 @@
                 <div class="col-sm-9">
                     <input type="password"
                             class="form-control"
-                            placeholder="Password de su cuenta">
-
+                            placeholder="Password de su cuenta"
+                            formControlName="password">
+                    <span class="form-text text-danger"
+                            *ngIf="campoNoValido('password')">
+                        La contraseña debe ser mayor de 6 caracteres.
+                    </span>
                 </div>
             </div>
 
@@ -65,14 +73,19 @@
                 <div class="col-sm-9">
                     <input type="password"
                             class="form-control"
-                            placeholder="Confirmar la contraseña">
-
+                            placeholder="Confirmar la contraseña"
+                            formControlName="password2">
+                    <span class="form-text text-danger"
+                            *ngIf="campoNoValido('password2')">
+                        Las contraseñas deben de ser iguales.
+                    </span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col">
                     <button class="btn btn-primary float-end"
+                            [disabled]="miFromulario.pending"
                             type="submit">
                         Crear
                     </button>
@@ -85,9 +98,22 @@
 </div>
 
 <h2>Form Valid: {{ miFromulario.valid }}</h2>
+<h2>Form Status: {{ miFromulario.status }}</h2>
+<h2>Form Pending: {{ miFromulario.pending }}</h2>
+<h2>Form Errors</h2>
+<pre>{{ miFromulario.errors | json }}</pre>
 
 <h5>Nombre</h5>
 <pre>{{ miFromulario.controls?.['nombre']?.errors | json }}</pre>
 
 <h5>Email</h5>
 <pre>{{ miFromulario.controls?.['email']?.errors | json }}</pre>
+
+<h5>Username</h5>
+<pre>{{ miFromulario.controls?.['username']?.errors | json }}</pre>
+
+<h5>Password</h5>
+<pre>{{ miFromulario.controls?.['password']?.errors | json }}</pre>
+
+<h5>Confirmar</h5>
+<pre>{{ miFromulario.controls?.['password2']?.errors | json }}</pre>
