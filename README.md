@@ -25,3 +25,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+### Actualizar Angular
+Si estás en Windows, puedes hacerlo de esta manera:
+
+Ingresar al sitio de NodeJS y descargar la última versión
+Descarga NodeJS
+Instalar NodeJs.msi
+Abrir Node.js command prompt y ver la versión instalada:
+node -v
+Actualizar npm utilizando el siguiente comando:
+npm install npm -g
+Verificar la version de npm
+npm -v
+enlace a Stack Overflow
+https://es.stackoverflow.com/questions/24268/cómo-actualizo-nodejs-en-windows
